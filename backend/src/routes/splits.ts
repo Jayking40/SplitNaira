@@ -213,8 +213,15 @@ async function fetchProjectById(projectId: string) {
   const server = new rpc.Server(config.sorobanRpcUrl, { allowHttp: true });
   const contract = new Contract(config.contractId);
 
+  let simulatorAccount: Account;
+  try {
+    simulatorAccount = await server.getAccount(config.simulatorAccount);
+  } catch {
+    throw new RequestValidationError("simulator account not found on selected network");
+  }
+
   // 1. Fetch project details
-  const projectTx = new TransactionBuilder(new Account("GBRPYHIL2C4YVYC3Q4W4A6FTZVJ35UEDPKBQ6F4NNDM44YXV2RDJX2KE", "0"), {
+  const projectTx = new TransactionBuilder(simulatorAccount, {
     fee: BASE_FEE,
     networkPassphrase: config.networkPassphrase
   })
@@ -233,7 +240,7 @@ async function fetchProjectById(projectId: string) {
   }
 
   // 2. Fetch project balance
-  const balanceTx = new TransactionBuilder(new Account("GBRPYHIL2C4YVYC3Q4W4A6FTZVJ35UEDPKBQ6F4NNDM44YXV2RDJX2KE", "0"), {
+  const balanceTx = new TransactionBuilder(simulatorAccount, {
     fee: BASE_FEE,
     networkPassphrase: config.networkPassphrase
   })
