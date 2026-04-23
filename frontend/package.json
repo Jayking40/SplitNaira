@@ -16,7 +16,8 @@
     "clsx": "latest",
     "next": "latest",
     "react": "latest",
-    "react-dom": "latest"
+    "react-dom": "latest",
+    "zod": "3.24.2"
   },
   "devDependencies": {
     "@eslint/js": "latest",
